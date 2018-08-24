@@ -5,14 +5,13 @@ using UnityEngine.AI;
 
 public class PlayerAnimator : MonoBehaviour
 {
-
-    public AnimationClip replaceableAttackAnim;
-    protected AnimationClip[] currentAttackAnimSet;
-    const float locomotionAnimatorSmoothTime = .1f;
-
     protected Animator animator;
-    public bool wasAttacking;// we need this so we can take lock the direction we are facing during attacks, mecanim sometimes moves past the target which would flip the character around wildly
-    public bool rightButtonDown = false;    //we use this to "skip out" of consecutive right mouse down...
+    public bool isAttacking;// if player is in middle of a combo
+    public float lerpTime;
+
+    private Vector3 startPos;
+    private Vector3 endPos;
+    private float currentLerpTime = 0;
 
     // Use this for initialization
     protected virtual void Start()
@@ -23,29 +22,24 @@ public class PlayerAnimator : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (Input.GetMouseButton(1))// are we using the right button?
+        if (isAttacking)
         {
-            Debug.Log("right click");
-            if (rightButtonDown != true)// was it previously down? if so we are already using "USE" bailout (we don't want to repeat attacks 800 times a second...just once per press please
-            {
-                animator.SetTrigger("Attack01");//tell mecanim to do the attack animation(trigger)
-                rightButtonDown = true;//right button was not down before, mark it as down so we don't attack 800 frames a second 
-                wasAttacking = true;//some mecanims will actually move us past the target, so we want to keep looking in one direction instead of spinning wildly around the target
-            }
-        }
-
-        if (Input.GetMouseButtonUp(1))//ok, we can clear the right mouse button and use it for the next attack
-        {
-            if (rightButtonDown == true)
-            {
-                rightButtonDown = false;
-            }
+            currentLerpTime += Time.deltaTime;
+            currentLerpTime = Mathf.Clamp(currentLerpTime, currentLerpTime, lerpTime);
+            float lerpPercent = currentLerpTime / lerpTime;
+            transform.localPosition = Vector3.Lerp(startPos, endPos, lerpPercent);
         }
     }
 
     public void SetTriggerAttack(string attackName)
     {
         animator.SetTrigger(attackName);
-        wasAttacking = true;
+
+        if (isAttacking == false)
+        {
+            isAttacking = true;
+            startPos = transform.localPosition;
+            endPos = transform.localPosition + Vector3.right * 3;
+        }
     }
 }

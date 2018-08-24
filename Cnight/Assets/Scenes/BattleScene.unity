@@ -545,7 +545,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1103746346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.21241844, y: -1.1497874, z: 1.1953793}
+  m_LocalPosition: {x: -10, y: -4.48, z: 2.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1474249748}
@@ -563,9 +563,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c9c737bd54c4628af01d3b1cbcdd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replaceableAttackAnim: {fileID: 0}
-  wasAttacking: 0
-  rightButtonDown: 0
+  isAttacking: 0
+  lerpTime: 0.05
 --- !u!1 &1326530225
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,13 +906,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1716754654}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6859756, y: -0.9813504, z: -10}
+  m_LocalRotation: {x: 0.17608838, y: 0, z: 0, w: 0.9843744}
+  m_LocalPosition: {x: -1.6859756, y: 4.95, z: -10.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20.284, y: 0, z: 0}
 --- !u!1 &1806621248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,15 +1087,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 4a8a9f9c4997e6146927d2ff7ef87db2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.58
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a8a9f9c4997e6146927d2ff7ef87db2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.58
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a8a9f9c4997e6146927d2ff7ef87db2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a8a9f9c4997e6146927d2ff7ef87db2, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1365,7 +1364,7 @@ GameObject:
   - component: {fileID: 2033386618}
   - component: {fileID: 2033386617}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: GroundPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1433,13 +1432,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2033386616}
-  m_LocalRotation: {x: 0.10627472, y: -0, z: -0, w: 0.99433684}
+  m_LocalRotation: {x: -0.0008565516, y: -0, z: -0, w: 0.9999997}
   m_LocalPosition: {x: -2.2759757, y: -4.5213504, z: 1.4514208}
-  m_LocalScale: {x: 3.19986, y: 1.1034, z: 1.1034}
+  m_LocalScale: {x: 6.0537086, y: 2.0874856, z: 2.0874856}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 12.201, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.098000005, y: 0, z: 0}
 --- !u!1 &2060899300
 GameObject:
   m_ObjectHideFlags: 0
