@@ -35,10 +35,20 @@ public class BattleManager : MonoBehaviour
             isPlayerTurn = !isPlayerTurn;
             onTurnChange.Invoke(isPlayerTurn);
         }
+
+        //PLAYER TURN, we are waiting on player input
+
+
+
+
+
+
     }
 
     public void AttackPressed(int comboNumber)
     {
         playerAnimator.StartAttack(comboNumber);
     }
+
+
 }

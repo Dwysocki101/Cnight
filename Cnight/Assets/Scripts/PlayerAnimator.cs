@@ -17,6 +17,8 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerSkills playerSkills;
     private BattleManager battleManager;
 
+
+    Queue<Skill> currentTurnComboQueue;
     // Use this for initialization
     protected virtual void Start()
     {
@@ -24,6 +26,9 @@ public class PlayerAnimator : MonoBehaviour
         battleManager.onTurnChange += onTurnChange;
         animator = GetComponentInChildren<Animator>();
         playerSkills = GetComponent<PlayerSkills>();
+
+    
+
     }
 
     // Update is called once per frame
@@ -51,6 +56,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void StartAttack(int comboNumber)
     {
+        
         if (isMoving == false)
         {
             isMoving = true;
@@ -58,7 +64,20 @@ public class PlayerAnimator : MonoBehaviour
             endPos = transform.localPosition + Vector3.right * 2;
         }
 
-        string animationName = playerSkills.combos[comboNumber][0].animationName;
+
+        currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[0]);
+
+        //DEBUG TO CHECK SKILLS IN CURRENT QUEUE 
+        foreach (Skill i in currentTurnComboQueue)
+        {
+            Debug.Log(i.animationName + " " + i.name + " in the queue");
+        }
+
+        string animationName = currentTurnComboQueue.Dequeue().animationName;
+
+        Debug.Log("Popped from queue & ATTACKIN WITH : " + animationName);
+
+
         SetTriggerAttack(animationName);
     }
 
