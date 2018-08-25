@@ -21,34 +21,53 @@ public class BattleManager : MonoBehaviour
 
     private GameObject player;
     private PlayerAnimator playerAnimator;
+    private PlayerSkills playerSkills;
+
+    private GameObject enemy;
+    private EnemyController enemyController;
+
+    Queue<Skill> currentTurnComboQueue;
 
     private void Start()
     {
         player = PlayerManager.instance.player;
         playerAnimator = player.GetComponent<PlayerAnimator>();
+        playerSkills = player.GetComponent<PlayerSkills>();
+
+        enemy = EnemyManager.instance.enemy;
+        enemyController = enemy.GetComponent<EnemyController>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown("5"))
-        {
-            isPlayerTurn = !isPlayerTurn;
-            onTurnChange.Invoke(isPlayerTurn);
-        }
-
-        //PLAYER TURN, we are waiting on player input
-
-
-
-
-
-
     }
 
     public void AttackPressed(int comboNumber)
     {
-        playerAnimator.StartAttack(comboNumber);
+        currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[comboNumber]);
+        string animationName = currentTurnComboQueue.Dequeue().animationName;
+        playerAnimator.StartAttack(animationName);
     }
 
+    public void TurnEnded()
+    {
+        isPlayerTurn = !isPlayerTurn;
+        onTurnChange.Invoke(isPlayerTurn);
+    }
 
+    public void CurrentAttackFinished()
+    {
+        if (currentTurnComboQueue.Count > 0)
+        {
+            if (isPlayerTurn)
+            {
+                enemyController.StartBlock();
+            }
+        }
+        else
+        {
+            currentTurnComboQueue = null;
+            TurnEnded();
+        }
+    }
 }

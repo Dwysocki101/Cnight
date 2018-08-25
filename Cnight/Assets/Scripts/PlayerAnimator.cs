@@ -14,21 +14,14 @@ public class PlayerAnimator : MonoBehaviour
     private Vector3 endPos;
     private float currentLerpTime = 0;
 
-    private PlayerSkills playerSkills;
     private BattleManager battleManager;
 
-
-    Queue<Skill> currentTurnComboQueue;
     // Use this for initialization
     protected virtual void Start()
-    {
+   {
         battleManager = BattleManager.instance;
         battleManager.onTurnChange += onTurnChange;
         animator = GetComponentInChildren<Animator>();
-        playerSkills = GetComponent<PlayerSkills>();
-
-    
-
     }
 
     // Update is called once per frame
@@ -54,29 +47,14 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
 
-    public void StartAttack(int comboNumber)
+    public void StartAttack(string animationName)
     {
-        
         if (isMoving == false)
         {
             isMoving = true;
             startPos = transform.localPosition;
             endPos = transform.localPosition + Vector3.right * 2;
         }
-
-
-        currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[0]);
-
-        //DEBUG TO CHECK SKILLS IN CURRENT QUEUE 
-        foreach (Skill i in currentTurnComboQueue)
-        {
-            Debug.Log(i.animationName + " " + i.name + " in the queue");
-        }
-
-        string animationName = currentTurnComboQueue.Dequeue().animationName;
-
-        Debug.Log("Popped from queue & ATTACKING WITH : " + animationName);
-
 
         SetTriggerAttack(animationName);
     }
@@ -96,5 +74,4 @@ public class PlayerAnimator : MonoBehaviour
             isMoving = true;
         }
     }
-
 }

@@ -12,6 +12,7 @@ public class PlayerSkills : MonoBehaviour {
         allSkills.Add(new OverheadAttack_2H());
         allSkills.Add(new DeathA_2H());
 
+        combos.Add(new List<Skill> { allSkills[0] });
         combos.Add(new List<Skill> { allSkills[0], allSkills[1] });
     }
 }

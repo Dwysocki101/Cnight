@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641275, b: 0.5748174, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 389148406}
+  - component: {fileID: 389148407}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -142,6 +143,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &389148407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 389148405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bae5f46495154234a5b70bad0a6cea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &493870819
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +164,7 @@ GameObject:
   - component: {fileID: 493870821}
   - component: {fileID: 493870820}
   - component: {fileID: 493870823}
+  - component: {fileID: 493870824}
   - component: {fileID: 493870822}
   m_Layer: 0
   m_Name: GameManager
@@ -209,6 +222,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1103746346}
+--- !u!114 &493870824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 493870819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff3bc1603d1148a6b8d86b6469d2686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 389148405}
 --- !u!1 &498459772
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,6 +637,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1014294105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1014294103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6edddc1240e38475f9e528da5eea8afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1103746346
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,8 +802,15 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1.1906184
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11100000, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
+    - target: {fileID: 11100000, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9f7140f1aa8654166b1b9e4a34599bcd, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
   m_IsPrefabAsset: 0
 --- !u!4 &1459468136 stripped
