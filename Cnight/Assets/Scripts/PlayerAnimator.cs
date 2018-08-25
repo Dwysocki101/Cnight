@@ -75,7 +75,7 @@ public class PlayerAnimator : MonoBehaviour
 
         string animationName = currentTurnComboQueue.Dequeue().animationName;
 
-        Debug.Log("Popped from queue & ATTACKIN WITH : " + animationName);
+        Debug.Log("Popped from queue & ATTACKING WITH : " + animationName);
 
 
         SetTriggerAttack(animationName);
