@@ -151,6 +151,8 @@ GameObject:
   m_Component:
   - component: {fileID: 493870821}
   - component: {fileID: 493870820}
+  - component: {fileID: 493870823}
+  - component: {fileID: 493870822}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -182,6 +184,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &493870822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 493870819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76edd94616d94a7c94cd13e37864cf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackButton1: {fileID: 2109055873}
+  attackButton2: {fileID: 895048803}
+--- !u!114 &493870823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 493870819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa2fbc0c66b4c4c91bc215e0a4071d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1103746346}
 --- !u!1 &498459772
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1103746347}
   - component: {fileID: 1103746348}
+  - component: {fileID: 1103746349}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -605,6 +633,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   lerpTime: 0.05
+--- !u!114 &1103746349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1103746346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abb0cb5bdd4348ecbdac17df9b30e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allSkills: []
 --- !u!1 &1326530225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1635,15 +1675,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1103746348}
-        m_MethodName: StartAttack
-        m_Mode: 5
+      - m_Target: {fileID: 493870820}
+        m_MethodName: AttackPressed
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Attack1
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,

@@ -19,6 +19,15 @@ public class BattleManager : MonoBehaviour
     public delegate void OnTurnChange(bool playerTurn);
     public OnTurnChange onTurnChange;
 
+    private GameObject player;
+    private PlayerAnimator playerAnimator;
+
+    private void Start()
+    {
+        player = PlayerManager.instance.player;
+        playerAnimator = player.GetComponent<PlayerAnimator>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown("5"))
@@ -26,5 +35,10 @@ public class BattleManager : MonoBehaviour
             isPlayerTurn = !isPlayerTurn;
             onTurnChange.Invoke(isPlayerTurn);
         }
+    }
+
+    public void AttackPressed(int comboNumber)
+    {
+        playerAnimator.StartAttack(comboNumber);
     }
 }

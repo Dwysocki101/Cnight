@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(PlayerSkills))]
 public class PlayerAnimator : MonoBehaviour
 {
     protected Animator animator;
@@ -13,6 +14,7 @@ public class PlayerAnimator : MonoBehaviour
     private Vector3 endPos;
     private float currentLerpTime = 0;
 
+    private PlayerSkills playerSkills;
     private BattleManager battleManager;
 
     // Use this for initialization
@@ -21,6 +23,7 @@ public class PlayerAnimator : MonoBehaviour
         battleManager = BattleManager.instance;
         battleManager.onTurnChange += onTurnChange;
         animator = GetComponentInChildren<Animator>();
+        playerSkills = GetComponent<PlayerSkills>();
     }
 
     // Update is called once per frame
@@ -46,7 +49,7 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
 
-    public void StartAttack(string attackName)
+    public void StartAttack(int comboNumber)
     {
         if (isMoving == false)
         {
@@ -55,13 +58,13 @@ public class PlayerAnimator : MonoBehaviour
             endPos = transform.localPosition + Vector3.right * 2;
         }
 
-        SetTriggerAttack(attackName);
+        string animationName = playerSkills.combos[comboNumber][0].animationName;
+        SetTriggerAttack(animationName);
     }
 
-    public void SetTriggerAttack(string attackName)
+    public void SetTriggerAttack(string animationName)
     {
-        animator.SetTrigger(attackName);
-
+        animator.Play(animationName);
     }
 
     void onTurnChange(bool playerTurn)
