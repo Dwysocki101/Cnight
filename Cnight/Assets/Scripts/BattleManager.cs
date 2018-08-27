@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class BattleManager : MonoBehaviour
 {
 
@@ -44,9 +44,23 @@ public class BattleManager : MonoBehaviour
 
     public void AttackPressed(int comboNumber)
     {
-        currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[comboNumber]);
-        string animationName = currentTurnComboQueue.Dequeue().animationName;
-        playerAnimator.StartAttack(animationName);
+        if (isPlayerTurn)
+        {
+            currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[comboNumber]);
+            string animationName = currentTurnComboQueue.Dequeue().animationName;
+            playerAnimator.StartAttack(animationName);
+        }
+        else
+        {
+            throw new NotImplementedException("TODO: button clicked on not player turn;this ui should probably be hidden");
+        }
+       
+    }
+
+    [ContextMenu("EndTurn")]
+    public void forceTurnEnd()
+    {
+        TurnEnded();
     }
 
     public void TurnEnded()

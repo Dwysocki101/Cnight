@@ -14,5 +14,8 @@ public class UIManager : MonoBehaviour {
         player = PlayerManager.instance.player;
         Text attackButton1Text = attackButton1.GetComponentInChildren<Text>();
         attackButton1Text.text = player.GetComponent<PlayerSkills>().combos[0][0].name;
+
+        Text attackButton2Text = attackButton2.GetComponentInChildren<Text>();
+        attackButton2Text.text = player.GetComponent<PlayerSkills>().combos[1][0].name;
     }
 }
