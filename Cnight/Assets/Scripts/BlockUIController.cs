@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NecroShieldIcon : MonoBehaviour {
+public class BlockUIController : MonoBehaviour {
 
     // Use this for initialization
     private bool active;
     private float countdown;
+
+    private Renderer renderComponent;
+
 	void Start () {
+        renderComponent = GetComponent<Renderer>();
         SetActive(false);
 	}
 	
@@ -15,8 +19,9 @@ public class NecroShieldIcon : MonoBehaviour {
 	void Update () {
         if (active)
         {
-            countdown -= 80.0f * Time.deltaTime;//About 3 seconds
-            if (countdown < 0.0f)
+            countdown -= Time.deltaTime;//About 2 seconds
+
+            if (countdown <= 0.0f)
             {
                 SetActive(false);
             }
@@ -27,14 +32,14 @@ public class NecroShieldIcon : MonoBehaviour {
     {
         if (setActive)
         {
-            countdown = 120.0f;
-            GetComponent<Renderer>().enabled = true;
+            countdown = 2.0f;
+            renderComponent.enabled = true;
             active = setActive;
         }
         else
         {
             countdown = 0.0f;
-            GetComponent<Renderer>().enabled = false;
+            renderComponent.enabled = false;
             active = setActive;
         }
     }

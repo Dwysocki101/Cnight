@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
     GameObject player;
     public Button attackButton1;
     public Button attackButton2;
+    public Canvas playerDirectionCanvas;
 
     private void Start()
     {
@@ -17,5 +18,11 @@ public class UIManager : MonoBehaviour {
 
         Text attackButton2Text = attackButton2.GetComponentInChildren<Text>();
         attackButton2Text.text = player.GetComponent<PlayerSkills>().combos[1][0].name;
+    }
+
+    private void Update()
+    {
+        Vector3 playerPosition = Camera.main.WorldToScreenPoint(player.transform.position);
+        playerDirectionCanvas.transform.position = playerPosition;
     }
 }

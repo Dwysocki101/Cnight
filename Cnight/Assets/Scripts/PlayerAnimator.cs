@@ -31,7 +31,7 @@ public class PlayerAnimator : MonoBehaviour
         {
             currentLerpTime += Time.deltaTime;
 
-            if (currentLerpTime > lerpTime)
+            if(currentLerpTime > lerpTime)
             {
                 isMoving = false;
                 currentLerpTime = lerpTime;
@@ -40,7 +40,7 @@ public class PlayerAnimator : MonoBehaviour
             float lerpPercent = currentLerpTime / lerpTime;
             transform.localPosition = Vector3.Lerp(startPos, endPos, lerpPercent);
 
-            if (!isMoving)
+            if(!isMoving)
             {
                 currentLerpTime = 0;
             }
@@ -49,11 +49,11 @@ public class PlayerAnimator : MonoBehaviour
 
     public void StartAttack(string animationName)
     {
-        if (isMoving == false)
+        if(isMoving == false)
         {
             isMoving = true;
             startPos = transform.localPosition;
-            endPos = transform.localPosition + Vector3.right * 2;
+            endPos = transform.localPosition + Vector3.left * 2;
         }
 
         SetTriggerAttack(animationName);
@@ -66,7 +66,7 @@ public class PlayerAnimator : MonoBehaviour
 
     void onTurnChange(bool playerTurn)
     {
-        if (!playerTurn)
+        if(!playerTurn)
         {
             Vector3 temp = startPos;
             startPos = endPos;

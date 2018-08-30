@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - TargetEnemyUnit
-  - NecroShieldIconLeft
-  - NecroShieldIconRight
+  - BlockIconLeft
+  - BlockIconRight
   layers:
   - Default
   - TransparentFX
