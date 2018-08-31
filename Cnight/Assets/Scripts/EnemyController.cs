@@ -4,46 +4,38 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public BlockDirection currentBlock = BlockDirection.None;
+    public BlockDirectionEnum currentBlock = BlockDirectionEnum.None;
     GameObject blockIconLeft;
     GameObject blockIconRight;
+    BlockUIController blockLeftUIController;
+    BlockUIController blockRightUIController;
 
     // Use this for initialization
     void Start()
     {
         blockIconLeft = GameObject.FindGameObjectsWithTag("BlockIconLeft")[0];
         blockIconRight = GameObject.FindGameObjectsWithTag("BlockIconRight")[0];
+        blockLeftUIController = blockIconLeft.GetComponent<BlockUIController>();
+        blockRightUIController = blockIconRight.GetComponent<BlockUIController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    [ContextMenu("StartBlock")]
     public void StartBlock()
     {
-        BlockDirection blockDirection = Random.Range(0, 100) > 50 ? BlockDirection.Left : BlockDirection.Right;
+        BlockDirectionEnum blockDirection = Random.Range(0, 100) > 50 ? BlockDirectionEnum.Left : BlockDirectionEnum.Right;
 
-        if(blockDirection == BlockDirection.Left)
+        if(blockDirection == BlockDirectionEnum.Left)
         {
-            BlockUIController blockUIController = blockIconLeft.GetComponent<BlockUIController>();
-            blockUIController.SetActive(true);
+            blockLeftUIController.SetActive(true);
         }
         else
         {
-            BlockUIController blockUIController = blockIconRight.GetComponent<BlockUIController>();
-            blockUIController.SetActive(true);
+            blockRightUIController.SetActive(true);
         }
     }
-}
 
-public enum BlockDirection
-{
-    None,
-    Left,
-    Right,
-    Up,
-    Down
+    public void EndBlock()
+    {
+        blockLeftUIController.SetActive(false);
+        blockRightUIController.SetActive(false);
+    }
 }

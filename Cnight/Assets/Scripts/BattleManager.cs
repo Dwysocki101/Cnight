@@ -22,9 +22,12 @@ public class BattleManager : MonoBehaviour
     private GameObject player;
     private PlayerAnimator playerAnimator;
     private PlayerSkills playerSkills;
+    private PlayerController playerController;
 
     private GameObject enemy;
     private EnemyController enemyController;
+
+    private UIManager uiManager;
 
     Queue<Skill> currentTurnComboQueue;
 
@@ -33,9 +36,12 @@ public class BattleManager : MonoBehaviour
         player = PlayerManager.instance.player;
         playerAnimator = player.GetComponent<PlayerAnimator>();
         playerSkills = player.GetComponent<PlayerSkills>();
+        playerController = player.GetComponent<PlayerController>();
 
         enemy = EnemyManager.instance.enemy;
         enemyController = enemy.GetComponent<EnemyController>();
+
+        uiManager = UIManager.instance;
     }
 
     private void Update()
@@ -44,7 +50,7 @@ public class BattleManager : MonoBehaviour
 
     public void AttackPressed(int comboNumber)
     {
-        if (isPlayerTurn)
+        if(isPlayerTurn)
         {
             currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[comboNumber]);
             string animationName = currentTurnComboQueue.Dequeue().animationName;
@@ -69,18 +75,20 @@ public class BattleManager : MonoBehaviour
         onTurnChange.Invoke(isPlayerTurn);
     }
 
+    // Attack animation finished. 
+    // If no more attacks in combo, end the turn.
+    // If there are more attacks in combo, tell UI to show next combo elements.
     public void CurrentAttackFinished()
     {
-        if (currentTurnComboQueue.Count > 0)
+        if(currentTurnComboQueue.Count > 0)
         {
             if (isPlayerTurn)
             {
-                //playerController.ContinueCombo();
-                enemyController.StartBlock();
+                uiManager.ContinuePlayerCombo();
             }
         }
         else
-        {
+       {
             currentTurnComboQueue = null;
             TurnEnded();
         }

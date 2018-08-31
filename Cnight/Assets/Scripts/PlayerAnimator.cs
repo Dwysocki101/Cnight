@@ -15,12 +15,14 @@ public class PlayerAnimator : MonoBehaviour
     private float currentLerpTime = 0;
 
     private BattleManager battleManager;
+    private UIManager uiManager;
 
     // Use this for initialization
     protected virtual void Start()
    {
         battleManager = BattleManager.instance;
         battleManager.onTurnChange += onTurnChange;
+        uiManager = UIManager.instance;
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -56,11 +58,13 @@ public class PlayerAnimator : MonoBehaviour
             endPos = transform.localPosition + Vector3.left * 2;
         }
 
-        SetTriggerAttack(animationName);
+        PlayAttackAnimation(animationName);
     }
 
-    public void SetTriggerAttack(string animationName)
+    // Play attack animation and disable directional canvas.
+    public void PlayAttackAnimation(string animationName)
     {
+        uiManager.ShowPlayerDirectionCanvas(false);
         animator.Play(animationName);
     }
 
