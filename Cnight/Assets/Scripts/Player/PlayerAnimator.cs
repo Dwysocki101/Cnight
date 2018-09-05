@@ -64,7 +64,6 @@ public class PlayerAnimator : MonoBehaviour
     // Play attack animation and disable directional canvas.
     public void PlayAttackAnimation(string animationName)
     {
-        uiManager.ShowPlayerDirectionCanvas(false);
         animator.Play(animationName);
     }
 

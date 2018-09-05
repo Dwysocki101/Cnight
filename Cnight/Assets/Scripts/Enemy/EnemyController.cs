@@ -10,9 +10,13 @@ public class EnemyController : MonoBehaviour
     BlockUIController blockLeftUIController;
     BlockUIController blockRightUIController;
 
+    private EnemyAnimator enemyAnimator;
+
     // Use this for initialization
     void Start()
     {
+        enemyAnimator = GetComponent<EnemyAnimator>();
+
         blockIconLeft = GameObject.FindGameObjectsWithTag("BlockIconLeft")[0];
         blockIconRight = GameObject.FindGameObjectsWithTag("BlockIconRight")[0];
         blockLeftUIController = blockIconLeft.GetComponent<BlockUIController>();
@@ -21,9 +25,9 @@ public class EnemyController : MonoBehaviour
 
     public void StartBlock()
     {
-        BlockDirectionEnum blockDirection = Random.Range(0, 100) > 50 ? BlockDirectionEnum.Left : BlockDirectionEnum.Right;
+        currentBlock = Random.Range(0, 100) > 50 ? BlockDirectionEnum.Left : BlockDirectionEnum.Right;
 
-        if(blockDirection == BlockDirectionEnum.Left)
+        if(currentBlock == BlockDirectionEnum.Left)
         {
             blockLeftUIController.SetActive(true);
         }
@@ -35,7 +39,14 @@ public class EnemyController : MonoBehaviour
 
     public void EndBlock()
     {
+        currentBlock = BlockDirectionEnum.None;
         blockLeftUIController.SetActive(false);
         blockRightUIController.SetActive(false);
+    }
+
+    // Player combo was blocked, end block ui and play counter attack animation
+    public void StartCounterAttack()
+    {
+        enemyAnimator.PlayCounterAnimation();
     }
 }

@@ -14,5 +14,6 @@ public class PlayerSkills : MonoBehaviour {
 
         combos.Add(new List<Skill> { allSkills[0] });
         combos.Add(new List<Skill> { allSkills[0], allSkills[1] });
+        combos.Add(new List<Skill> { allSkills[0], allSkills[1], allSkills[0] });
     }
 }

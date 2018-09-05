@@ -14,6 +14,8 @@ public class BattleManager : MonoBehaviour
     }
     #endregion
 
+    public bool playerDirectionChosen = false;
+
     private bool isPlayerTurn = true;
 
     public delegate void OnTurnChange(bool playerTurn);
@@ -63,24 +65,32 @@ public class BattleManager : MonoBehaviour
        
     }
 
-    [ContextMenu("EndTurn")]
-    public void forceTurnEnd()
+    // Called during player combo attack when user chooses a directional button to continue the combo
+    // If combo direction is same as monster block direction, monster will counter attack and end player turn
+    // If combo direction is NOT the same as monster block direction, play next attack animation and continue combo
+    public void PlayerComboDirectionChosen()
     {
-        TurnEnded();
-    }
+        playerDirectionChosen = true;
 
-    public void TurnEnded()
-    {
-        isPlayerTurn = !isPlayerTurn;
-        onTurnChange.Invoke(isPlayerTurn);
+        if (playerController.currentCombo == enemyController.currentBlock)
+        {
+            enemyController.StartCounterAttack();
+        }
+        else
+        {
+            // Remove block and directional canvas ui and play next animation
+            uiManager.EndPlayerCombo();
+            string animationName = currentTurnComboQueue.Dequeue().animationName;
+            playerAnimator.PlayAttackAnimation(animationName);
+        }
     }
 
     // Attack animation finished. 
     // If no more attacks in combo, end the turn.
     // If there are more attacks in combo, tell UI to show next combo elements.
-    public void CurrentAttackFinished()
+    public void CurrentAttackFinished(bool attackCountered)
     {
-        if(currentTurnComboQueue.Count > 0)
+        if(!attackCountered && currentTurnComboQueue.Count > 0)
         {
             if (isPlayerTurn)
             {
@@ -92,5 +102,20 @@ public class BattleManager : MonoBehaviour
             currentTurnComboQueue = null;
             TurnEnded();
         }
+    }
+
+    [ContextMenu("EndTurn")]
+    public void forceTurnEnd()
+    {
+        TurnEnded();
+    }
+
+    // Reset playerDirectionChosen
+    // Change turn and invoke onTurnChange event
+    public void TurnEnded()
+    {
+        playerDirectionChosen = false;
+        isPlayerTurn = !isPlayerTurn;
+        onTurnChange.Invoke(isPlayerTurn);
     }
 }

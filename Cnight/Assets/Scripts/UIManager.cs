@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     GameObject player;
     public Button attackButton1;
     public Button attackButton2;
+    public Button attackButton3;
     public Canvas playerDirectionCanvas;
 
     // directional choice cooldown at max time, default to 2 seconds
@@ -36,21 +37,26 @@ public class UIManager : MonoBehaviour
         player = PlayerManager.instance.player;
         enemyController = EnemyManager.instance.enemy.GetComponent<EnemyController>();
 
+        battleManager.onTurnChange += onTurnChange;
+
         Text attackButton1Text = attackButton1.GetComponentInChildren<Text>();
         attackButton1Text.text = player.GetComponent<PlayerSkills>().combos[0][0].name;
         Text attackButton2Text = attackButton2.GetComponentInChildren<Text>();
         attackButton2Text.text = player.GetComponent<PlayerSkills>().combos[1][0].name;
+        Text attackButton3Text = attackButton3.GetComponentInChildren<Text>();
+        attackButton3Text.text = player.GetComponent<PlayerSkills>().combos[2][0].name;
     }
 
     private void Update()
     {
-        if (directionChoiceActive)
+        if (directionChoiceActive && !battleManager.playerDirectionChosen)
         {
             currentChoiceCooldown -= Time.deltaTime;
 
             if (currentChoiceCooldown <= 0)
             {
-                EndPlayerCombo();
+                // if cooldown expired without a choice, end current turn
+                battleManager.TurnEnded();
             }
         }
 
@@ -84,7 +90,6 @@ public class UIManager : MonoBehaviour
         directionChoiceActive = false;
         ShowPlayerDirectionCanvas(false);
         enemyController.EndBlock();
-        battleManager.TurnEnded();
     }
 
     // Move the directional arrows canvas over the current player position.
@@ -92,5 +97,15 @@ public class UIManager : MonoBehaviour
     {
         Vector3 playerPosition = Camera.main.WorldToScreenPoint(player.transform.position);
         playerDirectionCanvas.transform.position = playerPosition;
+    }
+
+    // Called when turn ended.
+    // If player turn ended and player had a combo attack, end player's combo
+    void onTurnChange(bool playerTurn)
+    {
+        if (!playerTurn && directionChoiceActive)
+        {
+            EndPlayerCombo();
+        }
     }
 }
