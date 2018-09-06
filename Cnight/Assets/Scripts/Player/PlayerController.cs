@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
 
     public BlockDirectionEnum currentCombo = BlockDirectionEnum.None;
 
+    private PlayerAnimator playerAnimator;
+
     private UIManager uiManager;
     private BattleManager battleManager;
 
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     {
         battleManager = BattleManager.instance;
         uiManager = UIManager.instance;
+        playerAnimator = GetComponent<PlayerAnimator>();
 
         battleManager.onTurnChange += onTurnChange;
 
@@ -25,20 +28,32 @@ public class PlayerController : MonoBehaviour {
         blockIconRight = GameObject.FindGameObjectsWithTag("PlayerBlockIconRight")[0];
     }
 
-    // Called when user chooses a direction for continuing the combo attack
+    // Called when user chooses a direction for continuing the combo attack or blocking
     // Using block direction enum to compare with monster block, should probably rename enum :P
     // ** Convert int to block direction**
     public void ComboDirectionalButtonClicked(int direction)
     {
-        currentCombo = (BlockDirectionEnum) direction;
-        battleManager.PlayerComboDirectionChosen();
+        if (battleManager.isPlayerTurn)
+        {
+            currentCombo = (BlockDirectionEnum) direction;
+            battleManager.PlayerComboDirectionChosen();
+        }
+        else
+        {
+            currentBlock = (BlockDirectionEnum) direction;
+            battleManager.PlayerBlockDirectionChosen();
+        }
+    }
+
+    // Enemy combo was blocked, play counter attack animation
+    public void StartCounterAttack()
+    {
+        playerAnimator.PlayCounterAnimation();
     }
 
     void onTurnChange(bool playerTurn)
     {
-        if (!playerTurn)
-        {
-            currentCombo = BlockDirectionEnum.None;
-        }
+        currentCombo = BlockDirectionEnum.None;
+        currentBlock = BlockDirectionEnum.None;
     }
 }

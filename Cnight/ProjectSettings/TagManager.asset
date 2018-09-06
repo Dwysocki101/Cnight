@@ -9,6 +9,8 @@ TagManager:
   - BlockIconRight
   - PlayerBlockIconLeft
   - PlayerBlockIconRight
+  - ComboIconLeft
+  - ComboIconRight
   layers:
   - Default
   - TransparentFX

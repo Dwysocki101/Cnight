@@ -55,8 +55,16 @@ public class UIManager : MonoBehaviour
 
             if (currentChoiceCooldown <= 0)
             {
-                // if cooldown expired without a choice, end current turn
-                battleManager.TurnEnded();
+                if (battleManager.isPlayerTurn)
+                {
+                    // if cooldown expired without a choice, end current turn
+                    battleManager.TurnEnded();
+                }
+                else
+                {
+                    // enemy turn and player did not choose a block direction
+                    battleManager.PlayerBlockDirectionNotChosen();
+                }
             }
         }
 
@@ -92,6 +100,24 @@ public class UIManager : MonoBehaviour
         enemyController.EndBlock();
     }
 
+    // Enemy combo is continuing. 
+    // Show player directional canvas to choose a block direction.
+    // Make enemy continue combo to show an attack direction.
+    public void ContinueEnemyCombo()
+    {
+        directionChoiceActive = true;
+        currentChoiceCooldown = maxChoiceCooldown;
+        ShowPlayerDirectionCanvas(true);
+        enemyController.ContinueCombo();
+    }
+
+    public void EndEnemyCombo()
+    {
+        directionChoiceActive = false;
+        ShowPlayerDirectionCanvas(false);
+        enemyController.EndComboChoice();
+    }
+
     // Move the directional arrows canvas over the current player position.
     private void UpdateCanvasPosition()
     {
@@ -103,9 +129,16 @@ public class UIManager : MonoBehaviour
     // If player turn ended and player had a combo attack, end player's combo
     void onTurnChange(bool playerTurn)
     {
-        if (!playerTurn && directionChoiceActive)
+        if (directionChoiceActive)
         {
-            EndPlayerCombo();
+            if (!playerTurn)
+            {
+                EndPlayerCombo();
+            }
+            else
+            {
+                EndEnemyCombo();
+            }
         }
     }
 }

@@ -15,11 +15,7 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     public bool playerDirectionChosen = false;
-
-    private bool isPlayerTurn = true;
-
-    public delegate void OnTurnChange(bool playerTurn);
-    public OnTurnChange onTurnChange;
+    public bool isPlayerTurn = true;
 
     private GameObject player;
     private PlayerAnimator playerAnimator;
@@ -28,10 +24,14 @@ public class BattleManager : MonoBehaviour
 
     private GameObject enemy;
     private EnemyController enemyController;
+    private EnemyAnimator enemyAnimator;
 
     private UIManager uiManager;
 
-    Queue<Skill> currentTurnComboQueue;
+    private Queue<Skill> currentTurnComboQueue;
+
+    public delegate void OnTurnChange(bool playerTurn);
+    public OnTurnChange onTurnChange;
 
     private void Start()
     {
@@ -42,12 +42,9 @@ public class BattleManager : MonoBehaviour
 
         enemy = EnemyManager.instance.enemy;
         enemyController = enemy.GetComponent<EnemyController>();
+        enemyAnimator = enemy.GetComponent<EnemyAnimator>();
 
         uiManager = UIManager.instance;
-    }
-
-    private void Update()
-    {
     }
 
     public void AttackPressed(int comboNumber)
@@ -90,24 +87,65 @@ public class BattleManager : MonoBehaviour
     // If there are more attacks in combo, tell UI to show next combo elements.
     public void CurrentAttackFinished(bool attackCountered)
     {
+        // Last attack was finished, reset player direction chosen for next attack
+        playerDirectionChosen = false;
+
         if(!attackCountered && currentTurnComboQueue.Count > 0)
         {
             if (isPlayerTurn)
             {
                 uiManager.ContinuePlayerCombo();
             }
+            else
+            {
+                uiManager.ContinueEnemyCombo();
+            }
         }
         else
-       {
+        {
             currentTurnComboQueue = null;
             TurnEnded();
         }
     }
 
-    [ContextMenu("EndTurn")]
-    public void forceTurnEnd()
+    // Given the combo list to use, star thte nemey combo. Play the first attack animation.
+    public void StartEnemyCombo(List<Skill> comboList)
     {
-        TurnEnded();
+        currentTurnComboQueue = new Queue<Skill>(comboList);
+        string animationName = currentTurnComboQueue.Dequeue().animationName;
+        enemyAnimator.StartAttack(animationName);
+    }
+
+    // Called during enemy combo attack when user does not choose a block direction
+    // Continue enemy combo next attack.
+    // 
+    public void PlayerBlockDirectionNotChosen()
+    {
+        playerDirectionChosen = false;
+        // Remove block and directional canvas ui and play next animation
+        uiManager.EndEnemyCombo();
+        string animationName = currentTurnComboQueue.Dequeue().animationName;
+        enemyAnimator.PlayAttackAnimation(animationName);
+    }
+
+    // Called during enemy combo attack when user chooses a directional button to block.
+    // If combo direction is same as player block direction, player will counter attack and end enemy turn.
+    // If combo direction is NOT the same as player block direction, play next attack animation and continue combo.
+    public void PlayerBlockDirectionChosen()
+    {
+        playerDirectionChosen = true;
+
+        if (playerController.currentBlock == enemyController.currentComboDirection)
+        {
+            playerController.StartCounterAttack();
+        }
+        else
+        {
+            // Remove block and directional canvas ui and play next animation
+            uiManager.EndEnemyCombo();
+            string animationName = currentTurnComboQueue.Dequeue().animationName;
+            enemyAnimator.PlayAttackAnimation(animationName);
+        }
     }
 
     // Reset playerDirectionChosen
