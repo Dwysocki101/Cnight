@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour {
     // ** Convert int to block direction**
     public void ComboDirectionalButtonClicked(int direction)
     {
+        uiManager.DisableDirectionalCanvas();
+
         if (battleManager.isPlayerTurn)
         {
             currentCombo = (BlockDirectionEnum) direction;

@@ -8,8 +8,6 @@ public class EnemyController : MonoBehaviour
     public BlockDirectionEnum currentBlock = BlockDirectionEnum.None;
     GameObject blockIconLeft;
     GameObject blockIconRight;
-    BlockUIController blockLeftUIController;
-    BlockUIController blockRightUIController;
 
     public BlockDirectionEnum currentComboDirection = BlockDirectionEnum.None;
     GameObject comboIconLeft;
@@ -30,9 +28,11 @@ public class EnemyController : MonoBehaviour
         enemyStats = GetComponent<UnitStats>();
 
         blockIconLeft = GameObject.FindGameObjectsWithTag("BlockIconLeft")[0];
+        blockIconLeft.GetComponent<Image>().enabled = true;
+        blockIconLeft.SetActive(false);
         blockIconRight = GameObject.FindGameObjectsWithTag("BlockIconRight")[0];
-        blockLeftUIController = blockIconLeft.GetComponent<BlockUIController>();
-        blockRightUIController = blockIconRight.GetComponent<BlockUIController>();
+        blockIconRight.GetComponent<Image>().enabled = true;
+        blockIconRight.SetActive(false);
 
         comboIconLeft = GameObject.FindGameObjectsWithTag("ComboIconLeft")[0];
         comboIconLeft.GetComponent<Image>().enabled = true;
@@ -48,19 +48,19 @@ public class EnemyController : MonoBehaviour
 
         if(currentBlock == BlockDirectionEnum.Left)
         {
-            blockLeftUIController.SetActive(true);
+            blockIconLeft.SetActive(true);
         }
         else
         {
-            blockRightUIController.SetActive(true);
+            blockIconRight.SetActive(true);
         }
     }
 
     public void EndBlock()
     {
         currentBlock = BlockDirectionEnum.None;
-        blockLeftUIController.SetActive(false);
-        blockRightUIController.SetActive(false);
+        blockIconLeft.SetActive(false);
+        blockIconRight.SetActive(false);
     }
 
     // Player combo was blocked, end block ui and play counter attack animation

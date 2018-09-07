@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
     public Button attackButton2;
     public Button attackButton3;
     public Canvas playerDirectionCanvas;
+    public CanvasGroup directionCanvasGroup;
+
+    GameObject enemy;
+    public Canvas enemyComboCanvas;
 
     // directional choice cooldown at max time, default to 2 seconds
     public float maxChoiceCooldown = 2f;
@@ -35,6 +39,9 @@ public class UIManager : MonoBehaviour
     {
         battleManager = BattleManager.instance;
         player = PlayerManager.instance.player;
+        directionCanvasGroup = playerDirectionCanvas.GetComponent<CanvasGroup>();
+
+        enemy = EnemyManager.instance.enemy;
         enemyController = EnemyManager.instance.enemy.GetComponent<EnemyController>();
 
         battleManager.onTurnChange += onTurnChange;
@@ -70,12 +77,18 @@ public class UIManager : MonoBehaviour
 
         if (playerDirectionCanvas.isActiveAndEnabled)
         {
-            UpdateCanvasPosition();
+            UpdateDirectionalCanvasPosition();
+        }
+
+        if (enemyComboCanvas.isActiveAndEnabled)
+        {
+            UpdateEnemyComboCanvasPosition();
         }
     }
 
     public void ContinuePlayerCombo()
     {
+        directionCanvasGroup.interactable = true;
         directionChoiceActive = true;
         currentChoiceCooldown = maxChoiceCooldown;
         ShowPlayerDirectionCanvas(true);
@@ -89,7 +102,7 @@ public class UIManager : MonoBehaviour
 
         if (showCanvas)
         {
-            UpdateCanvasPosition();
+            UpdateDirectionalCanvasPosition();
         }
     }
 
@@ -105,6 +118,7 @@ public class UIManager : MonoBehaviour
     // Make enemy continue combo to show an attack direction.
     public void ContinueEnemyCombo()
     {
+        directionCanvasGroup.interactable = true;
         directionChoiceActive = true;
         currentChoiceCooldown = maxChoiceCooldown;
         ShowPlayerDirectionCanvas(true);
@@ -119,10 +133,21 @@ public class UIManager : MonoBehaviour
     }
 
     // Move the directional arrows canvas over the current player position.
-    private void UpdateCanvasPosition()
+    private void UpdateDirectionalCanvasPosition()
     {
         Vector3 playerPosition = Camera.main.WorldToScreenPoint(player.transform.position);
         playerDirectionCanvas.transform.position = playerPosition;
+    }
+
+    public void DisableDirectionalCanvas()
+    {
+        directionCanvasGroup.interactable = false;
+    }
+
+    private void UpdateEnemyComboCanvasPosition()
+    {
+        Vector3 enemyPosition = Camera.main.WorldToScreenPoint(enemy.transform.position);
+        enemyComboCanvas.transform.position = enemyPosition;
     }
 
     // Called when turn ended.

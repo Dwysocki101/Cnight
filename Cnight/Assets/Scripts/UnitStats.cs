@@ -25,6 +25,5 @@ public class UnitStats : MonoBehaviour {
         currentHealth -= damage;
         currentHealth = System.Math.Max(currentHealth, 0);
         onHealthChange.Invoke(currentHealth, maxHealth);
-        Debug.Log(transform.name + " took damage" + damage);
     }
 }
