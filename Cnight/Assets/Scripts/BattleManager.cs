@@ -25,10 +25,12 @@ public class BattleManager : MonoBehaviour
     private GameObject enemy;
     private EnemyController enemyController;
     private EnemyAnimator enemyAnimator;
+    private EnemySkills enemySkills;
 
     private UIManager uiManager;
 
     private Queue<Skill> currentTurnComboQueue;
+    private Skill currentSkill;
 
     public delegate void OnTurnChange(bool playerTurn);
     public OnTurnChange onTurnChange;
@@ -43,6 +45,7 @@ public class BattleManager : MonoBehaviour
         enemy = EnemyManager.instance.enemy;
         enemyController = enemy.GetComponent<EnemyController>();
         enemyAnimator = enemy.GetComponent<EnemyAnimator>();
+        enemySkills = enemy.GetComponent<EnemySkills>();
 
         uiManager = UIManager.instance;
     }
@@ -52,8 +55,8 @@ public class BattleManager : MonoBehaviour
         if(isPlayerTurn)
         {
             currentTurnComboQueue = new Queue<Skill>(playerSkills.combos[comboNumber]);
-            string animationName = currentTurnComboQueue.Dequeue().animationName;
-            playerAnimator.StartAttack(animationName);
+            currentSkill = currentTurnComboQueue.Dequeue();
+            playerAnimator.StartAttack(currentSkill.animationName);
         }
         else
         {
@@ -77,8 +80,8 @@ public class BattleManager : MonoBehaviour
         {
             // Remove block and directional canvas ui and play next animation
             uiManager.EndPlayerCombo();
-            string animationName = currentTurnComboQueue.Dequeue().animationName;
-            playerAnimator.PlayAttackAnimation(animationName);
+            currentSkill = currentTurnComboQueue.Dequeue();
+            playerAnimator.PlayAttackAnimation(currentSkill.animationName);
         }
     }
 
@@ -90,19 +93,39 @@ public class BattleManager : MonoBehaviour
         // Last attack was finished, reset player direction chosen for next attack
         playerDirectionChosen = false;
 
-        if(!attackCountered && currentTurnComboQueue.Count > 0)
+        if(!attackCountered)
         {
-            if (isPlayerTurn)
+            // attack hit, inflict damage on opponent
+            DamageOpponent();
+
+            if (currentTurnComboQueue.Count > 0)
             {
-                uiManager.ContinuePlayerCombo();
+                if (isPlayerTurn)
+                {
+                    uiManager.ContinuePlayerCombo();
+                }
+                else
+                {
+                    uiManager.ContinueEnemyCombo();
+                }
             }
             else
             {
-                uiManager.ContinueEnemyCombo();
+                currentTurnComboQueue = null;
+                TurnEnded();
             }
         }
         else
         {
+            if (isPlayerTurn)
+            {
+                playerController.TakeDamage(enemySkills.counterAttack.damage);
+            }
+            else
+            {
+                enemyController.TakeDamage(playerSkills.counterAttack.damage);
+            }
+
             currentTurnComboQueue = null;
             TurnEnded();
         }
@@ -112,8 +135,8 @@ public class BattleManager : MonoBehaviour
     public void StartEnemyCombo(List<Skill> comboList)
     {
         currentTurnComboQueue = new Queue<Skill>(comboList);
-        string animationName = currentTurnComboQueue.Dequeue().animationName;
-        enemyAnimator.StartAttack(animationName);
+        currentSkill = currentTurnComboQueue.Dequeue();
+        enemyAnimator.StartAttack(currentSkill.animationName);
     }
 
     // Called during enemy combo attack when user does not choose a block direction
@@ -124,8 +147,8 @@ public class BattleManager : MonoBehaviour
         playerDirectionChosen = false;
         // Remove block and directional canvas ui and play next animation
         uiManager.EndEnemyCombo();
-        string animationName = currentTurnComboQueue.Dequeue().animationName;
-        enemyAnimator.PlayAttackAnimation(animationName);
+        currentSkill = currentTurnComboQueue.Dequeue();
+        enemyAnimator.PlayAttackAnimation(currentSkill.animationName);
     }
 
     // Called during enemy combo attack when user chooses a directional button to block.
@@ -143,8 +166,22 @@ public class BattleManager : MonoBehaviour
         {
             // Remove block and directional canvas ui and play next animation
             uiManager.EndEnemyCombo();
-            string animationName = currentTurnComboQueue.Dequeue().animationName;
-            enemyAnimator.PlayAttackAnimation(animationName);
+            currentSkill = currentTurnComboQueue.Dequeue();
+            enemyAnimator.PlayAttackAnimation(currentSkill.animationName);
+        }
+    }
+
+    void DamageOpponent()
+    {
+        int damage = currentSkill.damage;
+
+        if (isPlayerTurn)
+        {
+            enemyController.TakeDamage(damage);
+        }
+        else
+        {
+            playerController.TakeDamage(damage);
         }
     }
 

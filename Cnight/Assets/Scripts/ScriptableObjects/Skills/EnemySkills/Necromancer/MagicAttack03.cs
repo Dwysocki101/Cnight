@@ -9,5 +9,6 @@ public class MagicAttack03 : Skill
     {
         name = "MagicAttack03";
         animationName = "MagicAttack03";
+        damage = 13;
     }
 }

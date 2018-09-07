@@ -7,4 +7,6 @@ public abstract class Skill : ScriptableObject {
     public new string name;
     [SerializeField]
     public string animationName;
+
+    public int damage = 0;
 }

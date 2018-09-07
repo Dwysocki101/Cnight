@@ -6,6 +6,6 @@ public class DeathC_2H : Skill {
     {
         name = "Death C";
         animationName = "2HDeathC";
+        damage = 5;
     }
-
 }

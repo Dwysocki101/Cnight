@@ -43,10 +43,10 @@ public class EnemyAnimator : MonoBehaviour {
         }
     }
 
-    // Called when enemy successfully blocks attack. Play the 'CounterAttack01' (hardcoded) animation.
-    public void PlayCounterAnimation()
+    // Called when enemy successfully blocks attack. Play the counter attack animation.
+    public void PlayCounterAnimation(string counterAnimation)
     {
-        animator.Play("CounterAttack01");
+        animator.Play(counterAnimation);
     }
 
     public void StartAttack(string animationName)

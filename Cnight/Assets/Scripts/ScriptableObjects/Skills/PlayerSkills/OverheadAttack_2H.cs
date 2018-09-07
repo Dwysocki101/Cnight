@@ -7,6 +7,7 @@ public class OverheadAttack_2H : Skill {
     {
         name = "Overhead Attack";
         animationName = "2HAttack1";
+        damage = 8;
     }
 
 }

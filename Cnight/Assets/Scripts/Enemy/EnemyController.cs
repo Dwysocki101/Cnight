@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     private BattleManager battleManager;
     private EnemyAnimator enemyAnimator;
     private EnemySkills enemySkills;
+    private UnitStats enemyStats;
     
     // Use this for initialization
     void Start()
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
         battleManager.onTurnChange += onTurnChange;
         enemyAnimator = GetComponent<EnemyAnimator>();
         enemySkills = GetComponent<EnemySkills>();
+        enemyStats = GetComponent<UnitStats>();
 
         blockIconLeft = GameObject.FindGameObjectsWithTag("BlockIconLeft")[0];
         blockIconRight = GameObject.FindGameObjectsWithTag("BlockIconRight")[0];
@@ -64,7 +66,7 @@ public class EnemyController : MonoBehaviour
     // Player combo was blocked, end block ui and play counter attack animation
     public void StartCounterAttack()
     {
-        enemyAnimator.PlayCounterAnimation();
+        enemyAnimator.PlayCounterAnimation(enemySkills.counterAttack.animationName);
     }
 
     // Called when enemy turn starts. Wait 1s before starting enemy attack.
@@ -132,6 +134,11 @@ public class EnemyController : MonoBehaviour
         currentComboDirection = BlockDirectionEnum.None;
         comboIconLeft.SetActive(false);
         comboIconRight.SetActive(false);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        enemyStats.TakeDamage(damage);
     }
 
     // Turn changed. If it is now enemy turn, go to turn start coroutine

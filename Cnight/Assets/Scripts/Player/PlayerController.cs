@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public BlockDirectionEnum currentCombo = BlockDirectionEnum.None;
 
     private PlayerAnimator playerAnimator;
+    private UnitStats playerStats;
 
     private UIManager uiManager;
     private BattleManager battleManager;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
         battleManager = BattleManager.instance;
         uiManager = UIManager.instance;
         playerAnimator = GetComponent<PlayerAnimator>();
+        playerStats = GetComponent<UnitStats>();
 
         battleManager.onTurnChange += onTurnChange;
 
@@ -49,6 +51,11 @@ public class PlayerController : MonoBehaviour {
     public void StartCounterAttack()
     {
         playerAnimator.PlayCounterAnimation();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        playerStats.TakeDamage(damage);
     }
 
     void onTurnChange(bool playerTurn)

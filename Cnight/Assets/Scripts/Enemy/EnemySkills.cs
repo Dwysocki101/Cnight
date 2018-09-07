@@ -6,6 +6,7 @@ public class EnemySkills : MonoBehaviour {
 
     public List<Skill> allSkills = new List<Skill>();
     public List<List<Skill>> combos = new List<List<Skill>>();
+    public Skill counterAttack;
 
     private void Awake()
     {
@@ -15,5 +16,7 @@ public class EnemySkills : MonoBehaviour {
         combos.Add(new List<Skill> { allSkills[0] });
         combos.Add(new List<Skill> { allSkills[1], allSkills[0] });
         combos.Add(new List<Skill> { allSkills[1], allSkills[0], allSkills[1] });
+
+        counterAttack = (Skill) ScriptableObject.CreateInstance("NecromancerCounterAttack");
     }
 }

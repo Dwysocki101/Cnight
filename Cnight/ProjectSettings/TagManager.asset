@@ -11,6 +11,7 @@ TagManager:
   - PlayerBlockIconRight
   - ComboIconLeft
   - ComboIconRight
+  - PlayerHealthBar
   layers:
   - Default
   - TransparentFX

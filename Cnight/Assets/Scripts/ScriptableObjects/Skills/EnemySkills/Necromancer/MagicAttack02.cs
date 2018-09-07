@@ -8,5 +8,6 @@ public class MagicAttack02 : Skill {
     {
         name = "MagicAttack02";
         animationName = "MagicAttack02";
+        damage = 20;
     }
 }
